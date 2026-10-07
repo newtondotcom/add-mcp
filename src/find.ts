@@ -69,6 +69,12 @@ export interface FindCommandOptions {
   yes?: boolean;
   registries?: FindRegistrySearchConfig[];
   preferredTransport?: TransportType;
+  /**
+   * Pin an npm package target to `identifier@version`. Manifest installs set
+   * this so the written command matches the published server.json version.
+   * `find` leaves it unset and keeps the registry identifier as-is.
+   */
+  pinPackageVersion?: boolean;
 }
 
 export interface FindInstallPlan {
@@ -387,6 +393,19 @@ function formatPackageTarget(pkg: RegistryPackageDefinition): string {
   return pkg.identifier;
 }
 
+/** `identifier@version` when the manifest names a version and the spec has none yet. */
+function pinNpmPackageSpec(
+  identifier: string,
+  version: string | undefined,
+): string {
+  const id = identifier.trim();
+  const ver = version?.trim();
+  if (!ver) return id;
+  const at = id.lastIndexOf("@");
+  if (at > 0) return id;
+  return `${id}@${ver}`;
+}
+
 function transportLabel(entry: RegistryServerEntry): string {
   const parts: string[] = [];
   if (entry.package) parts.push("stdio");
@@ -648,7 +667,9 @@ export async function buildInstallPlanForEntry(
     if (!resolved) return null;
 
     return {
-      target: formatPackageTarget(pkg),
+      target: options.pinPackageVersion
+        ? pinNpmPackageSpec(pkg.identifier, pkg.version)
+        : formatPackageTarget(pkg),
       serverName: resolveServerName(entry),
       env: resolved.env,
       headers: resolved.headers,

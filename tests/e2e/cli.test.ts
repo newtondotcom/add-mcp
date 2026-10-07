@@ -3887,6 +3887,147 @@ test("E2E CLI: OpenCode lists a V1 server named toString", () => {
   assert.match(output, /https:\/\/to-string\.example\.com\/mcp/);
 });
 
+test("E2E CLI: server.json remote manifest installs the URL and header", () => {
+  const projectDir = createTempDir();
+  const homeDir = createTempDir();
+  writeFileSync(
+    join(projectDir, "server.json"),
+    JSON.stringify({
+      name: "io.github.example/weather",
+      title: "Weather",
+      description: "Weather forecasts",
+      version: "1.0.2",
+      remotes: [
+        {
+          type: "streamable-http",
+          url: "https://weather.example.com/mcp",
+          headers: [{ name: "Authorization", isRequired: true }],
+        },
+      ],
+    }),
+  );
+
+  const result = runCli(
+    [
+      "./server.json",
+      "-a",
+      "claude-code",
+      "-y",
+      "--header",
+      "Authorization: Bearer secret",
+    ],
+    projectDir,
+    homeDir,
+  );
+
+  if (result.status !== 0) {
+    throw new Error(
+      `CLI failed.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`,
+    );
+  }
+
+  const saved = JSON.parse(
+    readFileSync(join(projectDir, ".mcp.json"), "utf-8"),
+  );
+  const server = saved.mcpServers.weather as Record<string, unknown>;
+  assert.ok(server);
+  assert.strictEqual(server.type, "http");
+  assert.strictEqual(server.url, "https://weather.example.com/mcp");
+  assert.deepStrictEqual(server.headers, { Authorization: "Bearer secret" });
+});
+
+test("E2E CLI: server.json npm manifest pins the version and appends args", () => {
+  const projectDir = createTempDir();
+  const homeDir = createTempDir();
+  writeFileSync(
+    join(projectDir, "server.json"),
+    JSON.stringify({
+      name: "io.github.example/fs",
+      title: "Filesystem",
+      description: "Local files",
+      version: "1.2.0",
+      packages: [
+        {
+          registryType: "npm",
+          identifier: "@example/mcp-fs",
+          version: "1.2.0",
+          transport: { type: "stdio" },
+          environmentVariables: [{ name: "ALLOWED_DIR", isRequired: true }],
+          packageArguments: [
+            { type: "positional", valueHint: "root", isRequired: true },
+          ],
+        },
+      ],
+    }),
+  );
+
+  const result = runCli(
+    [
+      "server.json",
+      "-a",
+      "claude-code",
+      "-y",
+      "--env",
+      "ALLOWED_DIR=/tmp",
+      "--args",
+      "--extra",
+    ],
+    projectDir,
+    homeDir,
+  );
+
+  if (result.status !== 0) {
+    throw new Error(
+      `CLI failed.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`,
+    );
+  }
+
+  const saved = JSON.parse(
+    readFileSync(join(projectDir, ".mcp.json"), "utf-8"),
+  );
+  const server = saved.mcpServers.filesystem as Record<string, unknown>;
+  assert.ok(server);
+  assert.strictEqual(server.command, "npx");
+  assert.deepStrictEqual(server.args, [
+    "-y",
+    "@example/mcp-fs@1.2.0",
+    "<your-variable-value-here>",
+    "--extra",
+  ]);
+  assert.deepStrictEqual(server.env, { ALLOWED_DIR: "/tmp" });
+});
+
+test("E2E CLI: a pypi-only server.json fails", () => {
+  const projectDir = createTempDir();
+  const homeDir = createTempDir();
+  writeFileSync(
+    join(projectDir, "server.json"),
+    JSON.stringify({
+      name: "io.github.example/py",
+      description: "Python server",
+      version: "1.0.0",
+      packages: [
+        {
+          registryType: "pypi",
+          identifier: "example-mcp",
+          version: "1.0.0",
+          transport: { type: "stdio" },
+        },
+      ],
+    }),
+  );
+
+  const result = runCli(
+    ["./server.json", "-a", "claude-code", "-y"],
+    projectDir,
+    homeDir,
+  );
+  assert.notStrictEqual(result.status, 0);
+  const output = `${result.stdout}\n${result.stderr}`;
+  assert.match(output, /registry type "pypi"/);
+  assert.strictEqual(existsSync(join(projectDir, ".mcp.json")), false);
+});
+
 cleanup();
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed > 0 ? 1 : 0);

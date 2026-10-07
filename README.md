@@ -8,10 +8,10 @@ Docs and registry: [add-mcp.com](https://add-mcp.com)
 
 ## Install an MCP Server
 
-Install an MCP server by remote URL or package name:
+Install an MCP server by remote URL, package name, or [`server.json`](https://modelcontextprotocol.io/registry/about) manifest:
 
 ```bash
-npx add-mcp url | package name [options]
+npx add-mcp url | package name | server.json [options]
 ```
 
 Example installing the Context7 remote MCP server:
@@ -161,6 +161,10 @@ npx add-mcp "executor mcp" --name executor -a codex --auto-approve --approve-too
 # npm package (runs via npx)
 npx add-mcp @modelcontextprotocol/server-postgres
 
+# MCP Registry server.json (local file or URL ending in .json)
+npx add-mcp ./server.json
+npx add-mcp https://example.com/server.json -y
+
 # Non-interactive installation to all detected agents in the project directory
 npx add-mcp https://mcp.example.com/mcp -y
 
@@ -219,12 +223,12 @@ Not every MCP client understands every field. `add-mcp` keeps one canonical
 server config and each agent declares which optional fields it supports, mapping
 them into that client's native shape:
 
-| Field              | Flag                                | Supported by                                                                        | Mapped to                                                                                                           |
-| ------------------ | ----------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Timeout            | `--timeout`                         | Claude Code, Gemini CLI, Grok Build, Kilo Code, Kimi Code, Kiro CLI, Pi             | `timeout` (milliseconds); Grok Build `tool_timeout_sec` (seconds), Kimi Code `toolTimeoutMs`, Pi `requestTimeoutMs` |
-| OAuth scopes       | `--scopes`                          | Cursor, Gemini CLI, Mastra Code                                                     | Cursor `auth.scopes`, Gemini and Mastra Code `oauth.scopes`                                                         |
-| Bearer token env   | `--bearer-token-env`                | fx                                                                                  | `bearer_token_env`                                                                                                  |
-| Tool auto-approval | `--auto-approve` / `--approve-tool` | Codex, Claude Code                                                                  | Codex approval modes; Claude Code permission allow rules                                                            |
+| Field              | Flag                                | Supported by                                                            | Mapped to                                                                                                           |
+| ------------------ | ----------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Timeout            | `--timeout`                         | Claude Code, Gemini CLI, Grok Build, Kilo Code, Kimi Code, Kiro CLI, Pi | `timeout` (milliseconds); Grok Build `tool_timeout_sec` (seconds), Kimi Code `toolTimeoutMs`, Pi `requestTimeoutMs` |
+| OAuth scopes       | `--scopes`                          | Cursor, Gemini CLI, Mastra Code                                         | Cursor `auth.scopes`, Gemini and Mastra Code `oauth.scopes`                                                         |
+| Bearer token env   | `--bearer-token-env`                | fx                                                                      | `bearer_token_env`                                                                                                  |
+| Tool auto-approval | `--auto-approve` / `--approve-tool` | Codex, Claude Code                                                      | Codex approval modes; Claude Code permission allow rules                                                            |
 
 When you target an agent that does not support a field, `add-mcp` drops it from
 that agent's config and prints a warning (e.g. _"request timeout is not

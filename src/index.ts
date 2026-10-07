@@ -27,10 +27,16 @@ import {
 } from "./config.js";
 import { parseSource, isRemoteSource } from "./source-parser.js";
 import {
+  buildInstallPlanForEntry,
   getDefaultFindRegistries,
   runFind,
   type FindRegistrySearchConfig,
 } from "./find.js";
+import {
+  detectManifestSource,
+  loadServerManifest,
+  omitProvidedInputs,
+} from "./server-json.js";
 import {
   buildServerConfig,
   claudeCopilotGithubShadowError,
@@ -120,6 +126,9 @@ function showBanner(): void {
   );
   console.log(
     `  ${DIM}$${RESET} ${TEXT}npx add-mcp find ${DIM}<keyword>${RESET}     ${DIM}Search integrations.sh MCP servers${RESET}`,
+  );
+  console.log(
+    `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}./server.json${RESET}       ${DIM}Install from an MCP server.json manifest${RESET}`,
   );
   console.log();
   console.log(
@@ -439,7 +448,10 @@ program
   )
   .version(version)
   .helpOption("--help", "display help for command")
-  .argument("[target]", "MCP server URL (remote) or package name (local stdio)")
+  .argument(
+    "[target]",
+    "MCP server URL (remote), package name (local stdio), or server.json manifest",
+  )
   .option(
     "-g, --global",
     "Install globally (user-level) instead of project-level",
@@ -1489,6 +1501,117 @@ function listAgents(): void {
   console.log();
 }
 
+function toHeaderFlags(headers: Record<string, string>): string[] | undefined {
+  const entries = Object.entries(headers);
+  if (entries.length === 0) return undefined;
+  return entries.map(([key, value]) => `${key}: ${value}`);
+}
+
+function toEnvFlags(env: Record<string, string>): string[] | undefined {
+  const entries = Object.entries(env);
+  if (entries.length === 0) return undefined;
+  return entries.map(([key, value]) => `${key}=${value}`);
+}
+
+function rejectInvalidHeaderAndEnv(options: Options): {
+  headers: Record<string, string>;
+  env: Record<string, string>;
+} {
+  const headerResult = parseHeaders(options.header ?? []);
+  if (headerResult.invalid.length > 0) {
+    const hint = looksLikeEatenShellVar(headerResult.invalid, ":")
+      ? " (looks like your shell expanded a ${VAR} to an empty string; use single quotes: --header 'Key: ${VAR}' to pass the template literally)"
+      : "";
+    p.log.error(
+      `Invalid --header value(s): ${headerResult.invalid.join(", ")}. Use 'Key: Value' format.${hint}`,
+    );
+    process.exit(1);
+  }
+
+  const envResult = parseEnv(options.env ?? []);
+  if (envResult.invalid.length > 0) {
+    const hint = looksLikeEatenShellVar(envResult.invalid, "=")
+      ? " (looks like your shell expanded a ${VAR} to an empty string; use single quotes: --env 'KEY=${VAR}' to pass the template literally)"
+      : "";
+    p.log.error(
+      `Invalid --env value(s): ${envResult.invalid.join(", ")}. Use 'KEY=VALUE' format.${hint}`,
+    );
+    process.exit(1);
+  }
+
+  return { headers: headerResult.headers, env: envResult.env };
+}
+
+/**
+ * When the target is a local server.json or an http(s) URL ending in `.json`,
+ * resolve it to the remote URL or npm package the rest of the installer
+ * already understands. Returns null when the user cancels a prompt.
+ */
+async function resolveManifestInstall(
+  target: string,
+  options: Options,
+): Promise<{ target: string; options: Options } | null> {
+  if (!detectManifestSource(target)) {
+    return { target, options };
+  }
+
+  const provided = rejectInvalidHeaderAndEnv(options);
+
+  const spinner = p.spinner();
+  spinner.start("Reading server manifest...");
+  let loaded: Awaited<ReturnType<typeof loadServerManifest>>;
+  try {
+    loaded = await loadServerManifest(target);
+  } catch (error) {
+    spinner.stop("Could not read server manifest");
+    p.log.error(error instanceof Error ? error.message : "Unknown error");
+    process.exit(1);
+  }
+  spinner.stop(`Manifest: ${chalk.cyan(loaded.entry.name)}`);
+
+  for (const skipped of loaded.skipped) {
+    p.log.warn(skipped);
+  }
+
+  const entry = omitProvidedInputs(loaded.entry, {
+    env: new Set(Object.keys(provided.env)),
+    headers: new Set(Object.keys(provided.headers)),
+  });
+
+  const transportFlag = options.transport || options.type;
+  const preferredTransport =
+    transportFlag === "sse" || transportFlag === "http"
+      ? transportFlag
+      : undefined;
+
+  const plan = await buildInstallPlanForEntry(entry, {
+    yes: options.yes,
+    preferredTransport,
+    pinPackageVersion: true,
+  });
+
+  if (!plan) {
+    p.cancel("Installation cancelled");
+    return null;
+  }
+
+  const env = { ...(plan.env ?? {}), ...provided.env };
+  const headers = { ...(plan.headers ?? {}), ...provided.headers };
+  const args = [...(plan.args ?? []), ...(options.args ?? [])];
+
+  return {
+    target: plan.target,
+    options: {
+      ...options,
+      name: options.name || plan.serverName,
+      transport: options.transport || options.type || plan.transport,
+      header: toHeaderFlags(headers),
+      env: toEnvFlags(env),
+      args: args.length > 0 ? args : undefined,
+    },
+  };
+}
+
 async function main(target: string | undefined, options: Options) {
   // --all just selects all agents, doesn't imply --yes or --global
   // Use --yes to skip prompts, --global to install globally
@@ -1516,6 +1639,9 @@ async function main(target: string | undefined, options: Options) {
     console.log(
       `  ${DIM}$${RESET} ${TEXT}npx add-mcp find ${DIM}<keyword>${RESET}     ${DIM}Search integrations.sh MCP servers${RESET}`,
     );
+    console.log(
+      `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}./server.json${RESET}       ${DIM}Install from an MCP server.json manifest${RESET}`,
+    );
     console.log();
     console.log(
       `${DIM}Supports:${RESET} Claude Code, Cursor, VS Code, OpenCode, and more`,
@@ -1529,6 +1655,13 @@ async function main(target: string | undefined, options: Options) {
   }
 
   console.log();
+
+  const manifestInstall = await resolveManifestInstall(target, options);
+  if (!manifestInstall) {
+    process.exit(0);
+  }
+  target = manifestInstall.target;
+  options = manifestInstall.options;
 
   const spinner = p.spinner();
 

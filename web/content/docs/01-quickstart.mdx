@@ -25,6 +25,16 @@ npx add-mcp @modelcontextprotocol/server-postgres
 
 The server is registered to run via `npx` in each agent's config.
 
+## Install from a server.json manifest
+
+A local MCP Registry [`server.json`](https://modelcontextprotocol.io/registry/about), or an `https` URL whose path ends in `.json`, installs the manifest's remote server or npm package:
+
+```bash
+npx add-mcp ./server.json
+```
+
+Required headers, environment variables, and package arguments are prompted. `--yes` fills those with placeholders. `--header`, `--env`, and `--args` supply them directly.
+
 ## Find a server by keyword
 
 Don't know the URL? Search the [registry](/registry) from the terminal:
@@ -60,10 +70,10 @@ Use single quotes around values with `${VAR}` placeholders so your shell doesn't
 
 ## Project vs. global scope
 
-| Scope       | Flag      | Written to                | Use case                                       |
-| ----------- | --------- | ------------------------- | ---------------------------------------------- |
-| **Project** | (default) | `.cursor/mcp.json`, etc.  | Committed with your project, shared with team  |
-| **Global**  | `-g`      | `~/.cursor/mcp.json` etc. | Available across all projects                  |
+| Scope       | Flag      | Written to                | Use case                                      |
+| ----------- | --------- | ------------------------- | --------------------------------------------- |
+| **Project** | (default) | `.cursor/mcp.json`, etc.  | Committed with your project, shared with team |
+| **Global**  | `-g`      | `~/.cursor/mcp.json` etc. | Available across all projects                 |
 
 When every selected agent supports both scopes, interactive mode asks which one you want. `-g` always forces global, and `-y` stays deterministic.
 

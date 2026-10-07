@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.5.0] - 2026-10-07
+
+- install an MCP server from a `server.json` manifest. Pass a local file (`npx add-mcp ./server.json`) or an `http(s)` URL whose path ends in `.json`. A bare manifest and a registry envelope (`{ "server": ... }`) both work. Remote `streamable-http` and `sse` entries become the usual remote install. An npm package is written as `npx -y <identifier>@<version>`, including manifest `packageArguments` and environment variables. `-y` fills required inputs with placeholders; `--header`, `--env`, and `--args` supply or append those values. When a manifest has both a remote and an npm package, `-y` installs the remote. PyPI, NuGet, OCI, Cargo, and MCPB packages are reported and skipped; a manifest with only those packages fails with the registry type named.
+
 ## [2.4.1] - 2026-09-29
 
 - fix GitHub Copilot CLI global installs and detection to use `$COPILOT_HOME` (default `~/.copilot`), the directory Copilot CLI reads. With `XDG_CONFIG_HOME` set, add-mcp wrote `$XDG_CONFIG_HOME/mcp-config.json`, which Copilot CLI never loads, and detected Copilot CLI whenever that directory existed. An existing `$XDG_CONFIG_HOME/mcp-config.json` is left untouched; rerun the install to write the Copilot CLI path. Global `list` and `remove` now read the corrected path, so entries that exist only in the old file no longer show up there.
