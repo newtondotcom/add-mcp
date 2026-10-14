@@ -907,14 +907,14 @@ test("resolveServerName returns 'server' as ultimate fallback", () => {
 test("formatRegistryFailure shows label for known registries", () => {
   const msg = formatRegistryFailure({
     registry: {
-      url: "https://add-mcp.com/registry/api/v1/servers",
-      label: "add-mcp registry",
+      url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+      label: "mcps registry",
     },
     detail: "HTTP 500",
   });
-  assert.strictEqual(msg.includes('"add-mcp registry"'), true);
+  assert.strictEqual(msg.includes('"mcps registry"'), true);
   assert.strictEqual(
-    msg.includes("https://add-mcp.com/registry/api/v1/servers"),
+    msg.includes("https://newtondotcom.github.io/mcps/registry/api/v1/servers"),
     true,
   );
   assert.strictEqual(msg.includes("HTTP 500"), true);
@@ -937,7 +937,7 @@ test("formatRegistryFailure shows only URL for custom registries", () => {
 test("getDefaultFindRegistries returns two hardcoded registries", () => {
   const defaults = getDefaultFindRegistries();
   assert.strictEqual(defaults.length, 2);
-  assert.ok(defaults[0]?.url.includes("add-mcp.com/registry"));
+  assert.ok(defaults[0]?.url.includes("newtondotcom.github.io/mcps/registry"));
   assert.ok(defaults[1]?.url.includes("modelcontextprotocol.io"));
 });
 
@@ -1103,11 +1103,11 @@ test("searchRegistry filters out non-installable entries (no npm package and no 
 
 test("parseRegistryOverride keeps the label for a built-in registry URL", () => {
   const parsed = parseRegistryOverride(
-    "  https://add-mcp.com/registry/api/v1/servers  ",
+    "  https://newtondotcom.github.io/mcps/registry/api/v1/servers  ",
   );
   assert.deepStrictEqual(parsed, {
-    url: "https://add-mcp.com/registry/api/v1/servers",
-    label: "add-mcp registry",
+    url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+    label: "mcps registry",
   });
 });
 

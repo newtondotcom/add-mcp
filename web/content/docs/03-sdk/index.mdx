@@ -1,20 +1,20 @@
 ---
 title: Programmatic use
-description: Install, list, and remove MCP servers from your own CLI or tool with the add-mcp SDK.
+description: Install, list, and remove MCP servers from your own CLI or tool with the mcps SDK.
 ---
 
-The `add-mcp` npm package doubles as a TypeScript SDK. If you're building a CLI or developer tool that should set up an MCP server for its users ("add our MCP server to Cursor with one command"), the SDK gives you the same battle-tested config writing the CLI uses — every agent, every format, capability gating included.
+The `mcps` npm package doubles as a TypeScript SDK. If you're building a CLI or developer tool that should set up an MCP server for its users ("add our MCP server to Cursor with one command"), the SDK gives you the same battle-tested config writing the CLI uses — every agent, every format, capability gating included.
 
 ## Install
 
 ```package-install
-add-mcp
+mcps
 ```
 
 ## Add a server to an agent
 
 ```ts
-import { upsertServer } from "add-mcp";
+import { upsertServer } from "mcps";
 
 // Remote server → project-level Cursor config (.cursor/mcp.json)
 const result = upsertServer(
@@ -33,7 +33,7 @@ console.log(`written to ${result.path}`);
 Stdio servers work the same way:
 
 ```ts
-import { upsertServer } from "add-mcp";
+import { upsertServer } from "mcps";
 
 // npm package → global Claude Code config
 upsertServer("claude-code", "postgres", {
@@ -47,7 +47,7 @@ upsertServer("claude-code", "postgres", {
 ## Detect the user's agents
 
 ```ts
-import { detectProjectAgents, detectGlobalAgents } from "add-mcp";
+import { detectProjectAgents, detectGlobalAgents } from "mcps";
 
 const project = detectProjectAgents("/path/to/project"); // sync
 const global = await detectGlobalAgents(); // async
@@ -56,7 +56,7 @@ const global = await detectGlobalAgents(); // async
 Combine detection with `upsertServer` to offer a one-command install across everything the user actually has:
 
 ```ts
-import { detectProjectAgents, upsertServer } from "add-mcp";
+import { detectProjectAgents, upsertServer } from "mcps";
 
 for (const agent of detectProjectAgents(process.cwd())) {
   upsertServer(
@@ -71,7 +71,7 @@ for (const agent of detectProjectAgents(process.cwd())) {
 ## List and remove
 
 ```ts
-import { listInstalledServers, removeServer } from "add-mcp";
+import { listInstalledServers, removeServer } from "mcps";
 
 const projectServers = await listInstalledServers({ cwd: "/path/to/project" });
 const globalServers = await listInstalledServers({ global: true });

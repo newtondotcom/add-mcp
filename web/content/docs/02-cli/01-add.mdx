@@ -6,44 +6,44 @@ description: Install an MCP server by URL, npm package, or command — the impli
 The default command. Pass a remote URL, an npm package name, or a full command:
 
 ```bash
-npx add-mcp <url | package | "command"> [options]
+npx mcps <url | package | "command"> [options]
 ```
 
 ## Examples
 
 ```bash
 # Remote MCP server (streamable HTTP, the default transport)
-npx add-mcp https://mcp.example.com/mcp
+npx mcps https://mcp.example.com/mcp
 
 # Remote MCP server over SSE
-npx add-mcp https://mcp.example.com/sse --transport sse
+npx mcps https://mcp.example.com/sse --transport sse
 
 # Remote server with an auth header
-npx add-mcp https://mcp.example.com/mcp --header 'Authorization: Bearer ${TOKEN}'
+npx mcps https://mcp.example.com/mcp --header 'Authorization: Bearer ${TOKEN}'
 
 # Remote server; fx reads the bearer token from this env var
-npx add-mcp https://mcp.example.com/mcp --bearer-token-env NEON_API_KEY
+npx mcps https://mcp.example.com/mcp --bearer-token-env NEON_API_KEY
 
 # Remote server with a request timeout and OAuth scopes (capability-gated)
-npx add-mcp https://mcp.example.com/mcp --timeout 30000 --scopes "read,write"
+npx mcps https://mcp.example.com/mcp --timeout 30000 --scopes "read,write"
 
 # npm package (runs via npx)
-npx add-mcp @modelcontextprotocol/server-postgres
+npx mcps @modelcontextprotocol/server-postgres
 
 # Full command with arguments
-npx add-mcp "npx -y @org/mcp-server --flag value"
+npx mcps "npx -y @org/mcp-server --flag value"
 
 # Node.js script
-npx add-mcp "node /path/to/server.js --port 3000"
+npx mcps "node /path/to/server.js --port 3000"
 
 # Local stdio server with environment variables (repeatable)
-npx add-mcp @modelcontextprotocol/server-filesystem --env "API_KEY=secret" --env "DATABASE_URL=postgres://localhost/app"
+npx mcps @modelcontextprotocol/server-filesystem --env "API_KEY=secret" --env "DATABASE_URL=postgres://localhost/app"
 
 # Auto-approve all tools for agents that support it (Codex, Claude Code)
-npx add-mcp "executor mcp" --name executor -a codex -a claude-code --auto-approve
+npx mcps "executor mcp" --name executor -a codex -a claude-code --auto-approve
 
 # Non-interactive install to the global Claude Code config
-npx add-mcp https://mcp.example.com/mcp -g -a claude-code -y
+npx mcps https://mcp.example.com/mcp -g -a claude-code -y
 ```
 
 ## Options
@@ -75,11 +75,11 @@ npx add-mcp https://mcp.example.com/mcp -g -a claude-code -y
 | **HTTP**  | `--transport http` | Streamable HTTP (default)                             |
 | **SSE**   | `--transport sse`  | Server-Sent Events (deprecated by MCP but still used) |
 
-Local servers (npm packages, commands) always use **stdio** transport. Most agents (Cursor, OpenCode, ...) don't need the transport type spelled out; add-mcp sets it where required.
+Local servers (npm packages, commands) always use **stdio** transport. Most agents (Cursor, OpenCode, ...) don't need the transport type spelled out; mcps sets it where required.
 
 ## Capability-gated fields
 
-Not every MCP client understands every field. add-mcp keeps one canonical server config; each agent declares which optional fields it supports and maps them into its native shape:
+Not every MCP client understands every field. mcps keeps one canonical server config; each agent declares which optional fields it supports and maps them into its native shape:
 
 | Field              | Flag                                | Supported by                                                                        | Mapped to                                                                                                           |
 | ------------------ | ----------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -88,7 +88,7 @@ Not every MCP client understands every field. add-mcp keeps one canonical server
 | Bearer token env   | `--bearer-token-env`                | fx                                                                                  | `bearer_token_env`                                                                                                  |
 | Tool auto-approval | `--auto-approve` / `--approve-tool` | Codex, Claude Code                                                                  | Codex approval modes; Claude Code permission allow rules                                                            |
 
-When a targeted agent doesn't support a field, add-mcp drops it from that agent's config and prints a warning — other agents still receive it. `--timeout`, `--scopes`, and `--bearer-token-env` apply to remote servers only. When `--bearer-token-env` and `--header Authorization` are both set, fx omits the Authorization header and writes `bearer_token_env`; other agents keep the header.
+When a targeted agent doesn't support a field, mcps drops it from that agent's config and prints a warning — other agents still receive it. `--timeout`, `--scopes`, and `--bearer-token-env` apply to remote servers only. When `--bearer-token-env` and `--header Authorization` are both set, fx omits the Authorization header and writes `bearer_token_env`; other agents keep the header.
 
 ## Auto-approving tool calls
 

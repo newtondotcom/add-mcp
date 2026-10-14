@@ -63,7 +63,7 @@ function parseArgs(argv) {
 function printHelp() {
   console.log(`Usage: node scripts/sync-integrations-sh.mjs [options]
 
-Build add-mcp's MCP registry JSON file from integrations.sh surface data.
+Build mcps's MCP registry JSON file from integrations.sh surface data.
 
 Options:
   --api-base <url>      integrations.sh API origin (default: ${DEFAULT_API_BASE})
@@ -78,7 +78,7 @@ async function fetchJson(url) {
   const response = await fetch(url, {
     headers: {
       accept: "application/json",
-      "user-agent": "add-mcp-registry-sync",
+      "user-agent": "mcps-registry-sync",
     },
   });
   if (!response.ok) {

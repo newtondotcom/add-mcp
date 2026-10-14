@@ -25,7 +25,7 @@ export async function fetchProjectStats(): Promise<ProjectStats> {
 
 async function fetchStars(): Promise<string | null> {
   try {
-    const res = await fetch("https://api.github.com/repos/neon-solutions/add-mcp");
+    const res = await fetch("https://api.github.com/repos/neon-solutions/mcps");
     if (!res.ok) return null;
     const data = (await res.json()) as { stargazers_count?: number };
     return typeof data.stargazers_count === "number"
@@ -39,7 +39,7 @@ async function fetchStars(): Promise<string | null> {
 async function fetchWeeklyDownloads(): Promise<string | null> {
   try {
     const res = await fetch(
-      "https://api.npmjs.org/downloads/point/last-week/add-mcp",
+      "https://api.npmjs.org/downloads/point/last-week/mcps",
     );
     if (!res.ok) return null;
     const data = (await res.json()) as { downloads?: number };

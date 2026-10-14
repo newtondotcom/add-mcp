@@ -1,7 +1,7 @@
 {
-  "name": "add-mcp-web",
+  "name": "mcps-web",
   "private": true,
-  "description": "Landing page and docs for add-mcp, served at add-mcp.com.",
+  "description": "Landing page and docs for mcps, served at newtondotcom.github.io/mcps.",
   "type": "module",
   "scripts": {
     "dev": "blume dev",

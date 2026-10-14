@@ -32,7 +32,7 @@ function test(name: string, fn: () => void) {
 }
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-formats-remove-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-formats-remove-test-"));
   tempDirs.push(dir);
   return dir;
 }

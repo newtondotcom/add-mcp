@@ -47,7 +47,7 @@ function test(name: string, fn: () => void) {
 }
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-installer-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-installer-test-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -276,7 +276,7 @@ test("buildServerConfig - command appends args when provided", () => {
   ]);
 });
 
-// Regression: https://github.com/neon-solutions/add-mcp/issues/29
+// Regression: https://github.com/newtondotcom/mcps/issues/29
 // Absolute paths must be preserved verbatim as the command — never split on
 // spaces, even when the path itself contains spaces.
 test("buildServerConfig - absolute path with spaces stays a single command", () => {

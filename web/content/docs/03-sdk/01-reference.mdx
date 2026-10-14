@@ -1,6 +1,6 @@
 ---
 title: API reference
-description: Every function and type exported by the add-mcp package.
+description: Every function and type exported by the mcps package.
 ---
 
 All exports come from the package root:
@@ -14,7 +14,7 @@ import {
   detectGlobalAgents,
   getAgentTypes,
   agents,
-} from "add-mcp";
+} from "mcps";
 ```
 
 ## upsertServer
@@ -99,7 +99,7 @@ The full agent capability map — `Record<AgentType, AgentConfig>` with each age
 
 ### McpServerConfig
 
-The canonical server definition. add-mcp maps it into each client's native schema and strips capability-gated fields the target agent doesn't support.
+The canonical server definition. mcps maps it into each client's native schema and strips capability-gated fields the target agent doesn't support.
 
 ```ts
 interface McpServerConfig {

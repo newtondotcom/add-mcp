@@ -36,7 +36,7 @@ function test(name: string, fn: () => void) {
 }
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-cli-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-cli-test-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -189,7 +189,7 @@ function overrideRegistryPayload(remoteUrl: string) {
 }
 
 function seedFindRegistries(homeDir: string) {
-  const configPath = join(homeDir, ".config", "add-mcp", "config.json");
+  const configPath = join(homeDir, ".config", "mcps", "config.json");
   mkdirSync(dirname(configPath), { recursive: true });
   writeFileSync(
     configPath,
@@ -198,8 +198,8 @@ function seedFindRegistries(homeDir: string) {
         version: 1,
         findRegistries: [
           {
-            url: "https://add-mcp.com/registry/api/v1/servers",
-            label: "add-mcp registry",
+            url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+            label: "mcps registry",
           },
           {
             url: "https://registry.modelcontextprotocol.io/v0.1/servers",
@@ -214,7 +214,7 @@ function seedFindRegistries(homeDir: string) {
   );
 }
 
-// Regression: https://github.com/neon-solutions/add-mcp/issues/29
+// Regression: https://github.com/newtondotcom/mcps/issues/29
 test("E2E CLI: absolute path with spaces is preserved as single command", () => {
   const projectDir = createTempDir();
   const homeDir = createTempDir();
@@ -421,16 +421,16 @@ test("E2E CLI: find -y seeds the default registry and installs", () => {
   }
 
   const output = `${result.stdout}\n${result.stderr}`;
-  assert.match(output, /Using add-mcp registry/);
+  assert.match(output, /Using mcps registry/);
 
-  const addMcpConfigPath = join(homeDir, ".config", "add-mcp", "config.json");
+  const addMcpConfigPath = join(homeDir, ".config", "mcps", "config.json");
   const addMcpConfig = JSON.parse(readFileSync(addMcpConfigPath, "utf-8")) as {
     findRegistries?: Array<{ url: string; label?: string }>;
   };
   assert.deepStrictEqual(addMcpConfig.findRegistries, [
     {
-      url: "https://add-mcp.com/registry/api/v1/servers",
-      label: "add-mcp registry",
+      url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+      label: "mcps registry",
     },
   ]);
 
@@ -516,7 +516,7 @@ test("E2E CLI: find --registry searches that URL and keeps the saved registries"
   const projectDir = createTempDir();
   const homeDir = createTempDir();
   seedFindRegistries(homeDir);
-  const configPath = join(homeDir, ".config", "add-mcp", "config.json");
+  const configPath = join(homeDir, ".config", "mcps", "config.json");
   const configBefore = readFileSync(configPath, "utf-8");
   const remoteUrl = "https://override.example.test/mcp";
   const registry = startRegistryServer(overrideRegistryPayload(remoteUrl));
@@ -585,7 +585,7 @@ test("E2E CLI: search --registry=URL does not seed the default registry", () => 
   }
 
   assert.strictEqual(
-    existsSync(join(homeDir, ".config", "add-mcp", "config.json")),
+    existsSync(join(homeDir, ".config", "mcps", "config.json")),
     false,
   );
   const cursorConfig = JSON.parse(
@@ -611,7 +611,7 @@ test("E2E CLI: find --registry rejects a non-http URL", () => {
   const output = `${result.stdout}\n${result.stderr}`;
   assert.match(output, /Invalid --registry URL/);
   assert.strictEqual(
-    existsSync(join(homeDir, ".config", "add-mcp", "config.json")),
+    existsSync(join(homeDir, ".config", "mcps", "config.json")),
     false,
   );
 });

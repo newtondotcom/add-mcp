@@ -6,23 +6,23 @@ description: Remove an MCP server from agent configurations.
 Remove a server by name, URL, or package name:
 
 ```bash
-npx add-mcp remove <name | url | package> [options]
+npx mcps remove <name | url | package> [options]
 ```
 
 ## Examples
 
 ```bash
 # Remove by server name (interactive selection by default)
-npx add-mcp remove neon
+npx mcps remove neon
 
 # Remove all matches without prompting
-npx add-mcp remove neon -y
+npx mcps remove neon -y
 
 # Remove by URL
-npx add-mcp remove https://mcp.neon.tech/mcp -y
+npx mcps remove https://mcp.neon.tech/mcp -y
 
 # Remove from global configs for a specific agent
-npx add-mcp remove neon -g -a cursor -y
+npx mcps remove neon -g -a cursor -y
 ```
 
 ## Options

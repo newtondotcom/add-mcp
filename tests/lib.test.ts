@@ -55,7 +55,7 @@ function test(name: string, fn: () => void | Promise<void>): Promise<void> {
 }
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-lib-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-lib-test-"));
   tempDirs.push(dir);
   return dir;
 }

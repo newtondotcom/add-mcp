@@ -38,7 +38,7 @@ const features = [
   },
   {
     title: "Find servers from the terminal",
-    body: "add-mcp find searches the registry and installs a match, prompting for required env vars and headers along the way.",
+    body: "mcps find searches the registry and installs a match, prompting for required env vars and headers along the way.",
   },
   {
     title: "A TypeScript SDK",
@@ -62,17 +62,17 @@ const examples = [
   {
     id: "remote",
     label: "Remote server",
-    code: "npx add-mcp https://mcp.context7.com/mcp",
+    code: "npx mcps https://mcp.context7.com/mcp",
   },
   {
     id: "npm",
     label: "npm package",
-    code: "npx add-mcp @modelcontextprotocol/server-postgres",
+    code: "npx mcps @modelcontextprotocol/server-postgres",
   },
   {
     id: "find",
     label: "Find in registry",
-    code: "npx add-mcp find neon",
+    code: "npx mcps find neon",
   },
 ];
 
@@ -81,7 +81,7 @@ const examples = [
 const structuredData = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "add-mcp",
+  name: "mcps",
   description: config.description,
   url: config.site,
   applicationCategory: "DeveloperApplication",
@@ -89,10 +89,10 @@ const structuredData = JSON.stringify({
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   license: "https://www.apache.org/licenses/LICENSE-2.0",
   softwareHelp: `${config.site}/docs`,
-  downloadUrl: "https://www.npmjs.com/package/add-mcp",
+  downloadUrl: "https://www.npmjs.com/package/mcps",
   sameAs: [
-    "https://github.com/neon-solutions/add-mcp",
-    "https://www.npmjs.com/package/add-mcp",
+    "https://github.com/newtondotcom/mcps",
+    "https://www.npmjs.com/package/mcps",
   ],
 });
 ---
@@ -111,7 +111,7 @@ const structuredData = JSON.stringify({
   siteUrl={config.site}
   ogEnabled={config.og.enabled}
   page={{
-    title: "add-mcp — add MCP servers to your coding agents",
+    title: "mcps — add MCP servers to your coding agents",
     description: config.description,
   }}
 >
@@ -257,7 +257,7 @@ const structuredData = JSON.stringify({
       <p
         class="text-muted-foreground mx-auto mt-2 max-w-2xl text-sm text-pretty"
       >
-        add-mcp installs any MCP server into Claude Code, Codex, Cursor,
+        mcps installs any MCP server into Claude Code, Codex, Cursor,
         OpenCode, VS Code, and 17 more coding agents from the same command.
       </p>
       <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
@@ -302,7 +302,7 @@ const structuredData = JSON.stringify({
       your MCP server for them in a few lines.
     </p>
     <pre
-      class="bg-muted mt-6 overflow-x-auto rounded-xl border p-5 text-left font-mono text-sm leading-relaxed"><code>{`import { upsertServer } from "add-mcp";
+      class="bg-muted mt-6 overflow-x-auto rounded-xl border p-5 text-left font-mono text-sm leading-relaxed"><code>{`import { upsertServer } from "mcps";
 
 upsertServer(
   "cursor",

@@ -1,7 +1,7 @@
 import { defineConfig } from "blume";
 
 export default defineConfig({
-  title: "add-mcp",
+  title: "mcps",
   description:
     "Add MCP servers to your favorite coding agents with a single command.",
   logo: "/logo.svg",
@@ -29,6 +29,6 @@ export default defineConfig({
 
   deployment: {
     output: "static",
-    site: "https://add-mcp.com",
+    site: "https://newtondotcom.github.io/mcps",
   },
 });

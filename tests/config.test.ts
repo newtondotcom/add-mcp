@@ -47,7 +47,7 @@ async function test(name: string, fn: () => void | Promise<void>) {
 }
 
 function setupTempHome(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-config-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-config-test-"));
   process.env.HOME = dir;
   process.env.USERPROFILE = dir;
   process.env.XDG_CONFIG_HOME = join(dir, ".config");
@@ -109,8 +109,8 @@ async function run() {
     setupTempHome();
     await saveFindRegistries([
       {
-        url: "https://add-mcp.com/registry/api/v1/servers",
-        label: "add-mcp registry",
+        url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+        label: "mcps registry",
       },
       {
         url: "https://registry.modelcontextprotocol.io/v0.1/servers",
@@ -120,8 +120,8 @@ async function run() {
     const registries = await getFindRegistries();
     assert.deepStrictEqual(registries, [
       {
-        url: "https://add-mcp.com/registry/api/v1/servers",
-        label: "add-mcp registry",
+        url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+        label: "mcps registry",
       },
       {
         url: "https://registry.modelcontextprotocol.io/v0.1/servers",
@@ -146,8 +146,8 @@ async function run() {
     const registries = await getFindRegistries();
     assert.deepStrictEqual(registries, [
       {
-        url: "https://add-mcp.com/registry/api/v1/servers",
-        label: "add-mcp registry",
+        url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+        label: "mcps registry",
       },
       {
         url: "https://registry.modelcontextprotocol.io/v0.1/servers",
@@ -173,7 +173,7 @@ async function run() {
     const registries = await getFindRegistries();
     assert.deepStrictEqual(registries, [
       {
-        url: "https://add-mcp.com/registry/api/v1/servers",
+        url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
         label: "My pinned registry",
       },
     ]);
@@ -183,8 +183,8 @@ async function run() {
     setupTempHome();
     await saveFindRegistries([
       {
-        url: "https://add-mcp.com/registry/api/v1/servers",
-        label: "add-mcp registry",
+        url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+        label: "mcps registry",
       },
       {
         url: "https://mcp.agent-tooling.dev/api/v1/servers",
@@ -195,16 +195,16 @@ async function run() {
     const registries = await getFindRegistries();
     assert.deepStrictEqual(registries, [
       {
-        url: "https://add-mcp.com/registry/api/v1/servers",
-        label: "add-mcp registry",
+        url: "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+        label: "mcps registry",
       },
     ]);
   });
 
-  await test("config is written to ~/.config/add-mcp/config.json", async () => {
+  await test("config is written to ~/.config/mcps/config.json", async () => {
     const home = setupTempHome();
     await saveSelectedAgents(["cursor"]);
-    const expectedPath = join(home, ".config", "add-mcp", "config.json");
+    const expectedPath = join(home, ".config", "mcps", "config.json");
     assert.strictEqual(existsSync(expectedPath), true);
   });
 
@@ -234,7 +234,7 @@ async function run() {
     ]);
     assert.strictEqual(config.findRegistries?.length, 1);
 
-    const newPath = join(home, ".config", "add-mcp", "config.json");
+    const newPath = join(home, ".config", "mcps", "config.json");
     assert.strictEqual(
       existsSync(newPath),
       true,
@@ -260,7 +260,7 @@ async function run() {
       }),
     );
 
-    const newPath = join(home, ".config", "add-mcp", "config.json");
+    const newPath = join(home, ".config", "mcps", "config.json");
     mkdirSync(dirname(newPath), { recursive: true });
     writeFileSync(
       newPath,
@@ -281,7 +281,7 @@ async function run() {
 
     await saveSelectedAgents(["codex"]);
 
-    const expectedPath = join(customConfig, "add-mcp", "config.json");
+    const expectedPath = join(customConfig, "mcps", "config.json");
     assert.strictEqual(existsSync(expectedPath), true);
 
     const saved = JSON.parse(readFileSync(expectedPath, "utf-8")) as {

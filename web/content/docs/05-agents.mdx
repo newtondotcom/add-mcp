@@ -1,6 +1,6 @@
 ---
 title: Supported agents
-description: Every coding agent add-mcp can install MCP servers to, with config paths and scopes.
+description: Every coding agent mcps can install MCP servers to, with config paths and scopes.
 ---
 
 MCP servers can be installed to any of these agents. Project paths are relative to your working directory; agents without a project path are global-only.
@@ -51,12 +51,12 @@ Some agents and editors, like Claude Code, require a restart to load a new MCP s
 
 Kimi Code only loads a project-level `.kimi-code/mcp.json` after you trust the folder in the CLI, so a project install may not take effect until then. Its MCP config is also validated as a whole: if another entry in the file is invalid, Kimi Code disables every MCP server, including a newly added one.
 
-Mastra Code also reads project `.mcp.json`. add-mcp writes `.mastracode/mcp.json` (and `~/.mastracode/mcp.json` globally) so a mixed Claude + Mastra install does not share that file.
+Mastra Code also reads project `.mcp.json`. mcps writes `.mastracode/mcp.json` (and `~/.mastracode/mcp.json` globally) so a mixed Claude + Mastra install does not share that file.
 
-Pi has no built-in MCP. add-mcp writes the Pi-owned files [`pi-mcp-adapter`](https://github.com/nicobailon/pi-mcp-adapter) reads. Install that extension with `pi install npm:pi-mcp-adapter`. A running Pi session picks the change up after `/reload`.
+Pi has no built-in MCP. mcps writes the Pi-owned files [`pi-mcp-adapter`](https://github.com/nicobailon/pi-mcp-adapter) reads. Install that extension with `pi install npm:pi-mcp-adapter`. A running Pi session picks the change up after `/reload`.
 
 fx reads MCP servers only from `~/.fx/mcp.json`. A project file cannot add a server. A running session applies the change with `/mcp reload`.
 
 OpenCode keeps the shape already in the file: `mcp.<name>` on a V1 or empty config, `mcp.servers.<name>` when that native map is already there. In a mixed file, a native entry wins over a legacy entry with the same name. Adding a new name to a mixed file still writes V1; renaming a server keeps it in the map it already uses.
 
-GitHub Copilot CLI project installs write `.mcp.json`. If `.mcp.json` is absent, an existing `.github/mcp.json` is reused. Copilot CLI does not read `.vscode/mcp.json` (that path is the VS Code agent). Entries left in `.vscode/mcp.json` from older Copilot CLI installs stay there for VS Code; rerun with `--agent github-copilot-cli` to write the CLI path. `.mcp.json` is shared with Claude Code: removing a server from either agent removes it for both. add-mcp will not create `.mcp.json` when `.github/mcp.json` already exists, because Copilot CLI would then ignore the GitHub file. Merge those servers into `.mcp.json` under `mcpServers` first. Copilot writes replace the file with strict JSON, so comments in that file are dropped (including global `~/.copilot/mcp-config.json`). Copilot CLI loads a project file only after the folder is trusted; confirm with `copilot mcp list --json`.
+GitHub Copilot CLI project installs write `.mcp.json`. If `.mcp.json` is absent, an existing `.github/mcp.json` is reused. Copilot CLI does not read `.vscode/mcp.json` (that path is the VS Code agent). Entries left in `.vscode/mcp.json` from older Copilot CLI installs stay there for VS Code; rerun with `--agent github-copilot-cli` to write the CLI path. `.mcp.json` is shared with Claude Code: removing a server from either agent removes it for both. mcps will not create `.mcp.json` when `.github/mcp.json` already exists, because Copilot CLI would then ignore the GitHub file. Merge those servers into `.mcp.json` under `mcpServers` first. Copilot writes replace the file with strict JSON, so comments in that file are dropped (including global `~/.copilot/mcp-config.json`). Copilot CLI loads a project file only after the folder is trusted; confirm with `copilot mcp list --json`.

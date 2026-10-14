@@ -6,29 +6,29 @@ description: Search MCP registries from the terminal and install a selected matc
 Search configured MCP registries by keyword and install a result interactively. `search` is an alias for `find`.
 
 ```bash
-npx add-mcp find <keyword> [options]
+npx mcps find <keyword> [options]
 ```
 
 ## Examples
 
 ```bash
 # Search for servers by keyword and choose one interactively
-npx add-mcp find vercel
+npx mcps find vercel
 
 # Browse servers without a keyword
-npx add-mcp find
+npx mcps find
 
 # Use the search alias (same as find)
-npx add-mcp search notion
+npx mcps search notion
 
 # Install a found server globally to a specific agent without prompts
-npx add-mcp find neon -a claude-code -g -y
+npx mcps find neon -a claude-code -g -y
 
 # Search a different registry for this command only
-npx add-mcp find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
+npx mcps find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
 
 # Install to all agents and add generated project configs to .gitignore
-npx add-mcp find github --all --gitignore
+npx mcps find github --all --gitignore
 ```
 
 ## Options
@@ -57,4 +57,4 @@ If a selected remote server defines URL variables or header inputs:
 
 ## Registries
 
-The first `find`/`search` run saves the default [add-mcp registry](/docs/registry) to `~/.config/add-mcp/config.json` and reuses it on every subsequent search. Pass `--registry <url>` to search another registry-compatible `http(s)` endpoint for that command only; the saved config is left unchanged. See the [registry docs](/docs/registry) for editing, adding, or hosting registries.
+The first `find`/`search` run saves the default [mcps registry](/docs/registry) to `~/.config/mcps/config.json` and reuses it on every subsequent search. Pass `--registry <url>` to search another registry-compatible `http(s)` endpoint for that command only; the saved config is left unchanged. See the [registry docs](/docs/registry) for editing, adding, or hosting registries.

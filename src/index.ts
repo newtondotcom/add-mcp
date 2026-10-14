@@ -75,7 +75,7 @@ const RESET = "\x1b[0m";
 const DIM = "\x1b[38;5;102m";
 const TEXT = "\x1b[38;5;145m";
 
-// ASCII art logo for ADD-MCP
+// ASCII art logo for mcps
 const LOGO_LINES = [
   " █████╗ ██████╗ ██████╗       ███╗   ███╗ ██████╗██████╗ ",
   "██╔══██╗██╔══██╗██╔══██╗      ████╗ ████║██╔════╝██╔══██╗",
@@ -108,19 +108,19 @@ function showBanner(): void {
   console.log(`${DIM}Add MCP servers to your favorite coding agents${RESET}`);
   console.log();
   console.log(
-    `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<url>${RESET}              ${DIM}Install remote MCP server${RESET}`,
+    `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<url>${RESET}              ${DIM}Install remote MCP server${RESET}`,
   );
   console.log(
-    `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<package>${RESET}          ${DIM}Install npm package${RESET}`,
+    `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<package>${RESET}          ${DIM}Install npm package${RESET}`,
   );
   console.log(
-    `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<url> ${TEXT}-g${RESET}            ${DIM}Install globally${RESET}`,
+    `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<url> ${TEXT}-g${RESET}            ${DIM}Install globally${RESET}`,
   );
   console.log(
-    `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<url> ${TEXT}-a cursor${RESET}    ${DIM}Install to specific agent${RESET}`,
+    `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<url> ${TEXT}-a cursor${RESET}    ${DIM}Install to specific agent${RESET}`,
   );
   console.log(
-    `  ${DIM}$${RESET} ${TEXT}npx add-mcp find ${DIM}<keyword>${RESET}     ${DIM}Search integrations.sh MCP servers${RESET}`,
+    `  ${DIM}$${RESET} ${TEXT}npx mcps find ${DIM}<keyword>${RESET}     ${DIM}Search integrations.sh MCP servers${RESET}`,
   );
   console.log();
   console.log(
@@ -128,7 +128,7 @@ function showBanner(): void {
   );
   console.log();
   console.log(
-    `${DIM}Learn more at${RESET} ${TEXT}https://github.com/neondatabase/add-mcp${RESET}`,
+    `${DIM}Learn more at${RESET} ${TEXT}https://github.com/newtondotcom/mcps${RESET}`,
   );
   console.log();
 }
@@ -447,7 +447,7 @@ function omitEmptyStringValues(
 }
 
 program
-  .name("add-mcp")
+  .name("mcps")
   .description(
     "Install MCP servers for coding agents (Claude Code, Cursor, VS Code, OpenCode, Codex, and more — run list-agents for the full list)",
   )
@@ -1544,19 +1544,19 @@ async function main(target: string | undefined, options: Options) {
     console.log(`${DIM}Add MCP servers to your favorite coding agents${RESET}`);
     console.log();
     console.log(
-      `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<url>${RESET}              ${DIM}Install remote MCP server${RESET}`,
+      `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<url>${RESET}              ${DIM}Install remote MCP server${RESET}`,
     );
     console.log(
-      `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<package>${RESET}          ${DIM}Install npm package${RESET}`,
+      `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<package>${RESET}          ${DIM}Install npm package${RESET}`,
     );
     console.log(
-      `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<url> ${TEXT}-g${RESET}            ${DIM}Install globally${RESET}`,
+      `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<url> ${TEXT}-g${RESET}            ${DIM}Install globally${RESET}`,
     );
     console.log(
-      `  ${DIM}$${RESET} ${TEXT}npx add-mcp ${DIM}<url> ${TEXT}-a cursor${RESET}    ${DIM}Install to specific agent${RESET}`,
+      `  ${DIM}$${RESET} ${TEXT}npx mcps ${DIM}<url> ${TEXT}-a cursor${RESET}    ${DIM}Install to specific agent${RESET}`,
     );
     console.log(
-      `  ${DIM}$${RESET} ${TEXT}npx add-mcp find ${DIM}<keyword>${RESET}     ${DIM}Search integrations.sh MCP servers${RESET}`,
+      `  ${DIM}$${RESET} ${TEXT}npx mcps find ${DIM}<keyword>${RESET}     ${DIM}Search integrations.sh MCP servers${RESET}`,
     );
     console.log();
     console.log(
@@ -1564,7 +1564,7 @@ async function main(target: string | undefined, options: Options) {
     );
     console.log();
     console.log(
-      `${DIM}Learn more at${RESET} ${TEXT}https://github.com/neondatabase/add-mcp${RESET}`,
+      `${DIM}Learn more at${RESET} ${TEXT}https://github.com/newtondotcom/mcps${RESET}`,
     );
     console.log();
     process.exit(0);

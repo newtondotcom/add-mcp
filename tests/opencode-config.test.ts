@@ -30,7 +30,7 @@ function test(name: string, fn: () => void) {
 }
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-opencode-config-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-opencode-config-"));
   tempDirs.push(dir);
   return dir;
 }

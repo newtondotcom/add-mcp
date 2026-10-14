@@ -4,20 +4,20 @@ description: List installed MCP servers across detected agents.
 ---
 
 ```bash
-npx add-mcp list [options]
+npx mcps list [options]
 ```
 
 ## Examples
 
 ```bash
 # List servers for all detected agents in the project
-npx add-mcp list
+npx mcps list
 
 # List global server configs
-npx add-mcp list -g
+npx mcps list -g
 
 # List servers for a specific agent (shown even if not detected)
-npx add-mcp list -a cursor
+npx mcps list -a cursor
 ```
 
 ## Options
@@ -32,5 +32,5 @@ npx add-mcp list -a cursor
 `list-agents` prints all supported coding agents with their supported scopes (project/global):
 
 ```bash
-npx add-mcp list-agents
+npx mcps list-agents
 ```

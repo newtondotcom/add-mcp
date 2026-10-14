@@ -40,7 +40,7 @@ function test(name: string, fn: () => void) {
 }
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "add-mcp-agents-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "mcps-agents-test-"));
   tempDirs.push(dir);
   return dir;
 }

@@ -1,4 +1,4 @@
-# add-mcp
+# mcps
 
 A CLI to install MCP servers for different coding agents (Claude Code, Cursor, VS Code, OpenCode, Codex, Grok Build) with a single command.
 
@@ -28,4 +28,4 @@ CI runs registry verification, typecheck, a subset of unit/e2e tests, and build.
 
 ## Releasing
 
-`add-mcp` ships through a locked-down GitHub Actions pipeline using npm Trusted Publishing (OIDC), provenance attestation, and `npm stage publish` with WebAuthn-gated maintainer approval. **There is no supported `npm publish` from a laptop.** See [docs/RELEASING.md](docs/RELEASING.md) for the one-time setup checklist, per-release runbook, and break-glass procedure.
+`mcps` ships through a locked-down GitHub Actions pipeline using npm Trusted Publishing (OIDC), provenance attestation, and `npm stage publish` with WebAuthn-gated maintainer approval. **There is no supported `npm publish` from a laptop.** See [docs/RELEASING.md](docs/RELEASING.md) for the one-time setup checklist, per-release runbook, and break-glass procedure.

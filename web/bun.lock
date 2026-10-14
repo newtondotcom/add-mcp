@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "add-mcp-web",
+      "name": "mcps-web",
       "dependencies": {
         "blume": "^0.6.7",
       },

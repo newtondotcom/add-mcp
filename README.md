@@ -1,29 +1,29 @@
-# add-mcp
+# mcps
 
-Add MCP servers to your favorite coding agents with a single command.
+The CLI for the open agent MCP ecosystem.
 
 Supports **Claude Code**, **Codex**, **Cursor**, **OpenCode**, **VS Code**, **Grok Build** and [16 more](#supported-agents).
 
-Docs and registry: [add-mcp.com](https://add-mcp.com)
+Docs and registry: [newtondotcom.github.io/mcps](https://newtondotcom.github.io/mcps)
 
 ## Install an MCP Server
 
 Install an MCP server by remote URL or package name:
 
 ```bash
-npx add-mcp url | package name [options]
+npx mcps url | package name [options]
 ```
 
 Example installing the Context7 remote MCP server:
 
 ```bash
-npx add-mcp https://mcp.context7.com/mcp
+npx mcps https://mcp.context7.com/mcp
 ```
 
-Example installing the Context7 remote MCP server via the programmatic API — great for integrating add-mcp in your own CLI tool:
+Example installing the Context7 remote MCP server via the programmatic API — great for integrating mcps in your own CLI tool:
 
 ```ts
-import { upsertServer } from "add-mcp";
+import { upsertServer } from "mcps";
 
 const result = upsertServer(
   "cursor",
@@ -38,13 +38,13 @@ You can add env variables and arguments (stdio) and headers (remote) to the serv
 
 ## Find MCP Servers
 
-Find and install MCP servers from the [add-mcp registry](https://add-mcp.com/registry):
+Find and install MCP servers from the [mcps registry](https://newtondotcom.github.io/mcps/registry):
 
 ```bash
-npx add-mcp find vercel
+npx mcps find vercel
 ```
 
-The first `find`/`search` run automatically saves the add-mcp registry to `~/.config/add-mcp/config.json` (or `$XDG_CONFIG_HOME/add-mcp/config.json`). You can edit that file to replace the default registry, add the official Anthropic registry, or point at any registry-compatible server. Pass `--registry <url>` to search a different registry for one command without changing that file.
+The first `find`/`search` run automatically saves the mcps registry to `~/.config/mcps/config.json` (or `$XDG_CONFIG_HOME/mcps/config.json`). You can edit that file to replace the default registry, add the official Anthropic registry, or point at any registry-compatible server. Pass `--registry <url>` to search a different registry for one command without changing that file.
 
 ## Supported Agents
 
@@ -77,9 +77,9 @@ MCP servers can be installed to any of these agents:
 
 **Aliases:** `codeium`, `cascade` → `windsurf`, `cline-vscode` → `cline`, `gemini` → `gemini-cli`, `github-copilot` → `vscode`, `grok` → `grok-build`, `kilo`, `kilocode` → `kilo-code`, `kimi` → `kimi-code`, `kiro` → `kiro-cli`, `mastra` → `mastracode`, `pi-agent` → `pi`
 
-Mastra Code also reads project `.mcp.json` for Claude Code compatibility. add-mcp writes `.mastracode/mcp.json` so a mixed Claude + Mastra install does not share that file.
+Mastra Code also reads project `.mcp.json` for Claude Code compatibility. mcps writes `.mastracode/mcp.json` so a mixed Claude + Mastra install does not share that file.
 
-Pi has no built-in MCP. add-mcp writes the Pi-owned files [`pi-mcp-adapter`](https://github.com/nicobailon/pi-mcp-adapter) reads (`pi install npm:pi-mcp-adapter`). A running Pi session picks the change up after `/reload`.
+Pi has no built-in MCP. mcps writes the Pi-owned files [`pi-mcp-adapter`](https://github.com/nicobailon/pi-mcp-adapter) reads (`pi install npm:pi-mcp-adapter`). A running Pi session picks the change up after `/reload`.
 
 Kimi Code only loads a project-level `.kimi-code/mcp.json` after you trust the folder in the CLI, so a project install may not take effect until then.
 
@@ -87,7 +87,7 @@ fx reads MCP servers only from `~/.fx/mcp.json`. A project file cannot add a ser
 
 OpenCode keeps the shape already in the file: `mcp.<name>` on a V1 or empty config, `mcp.servers.<name>` when that native map is already there. In a mixed file, a native entry wins over a legacy entry with the same name. Adding a new name to a mixed file still writes V1; renaming a server keeps it in the map it already uses.
 
-GitHub Copilot CLI project installs write `.mcp.json`. If `.mcp.json` is absent, an existing `.github/mcp.json` is reused. Copilot CLI does not read `.vscode/mcp.json` (that path is the VS Code agent). Entries left in `.vscode/mcp.json` from older Copilot CLI installs stay there for VS Code; rerun with `--agent github-copilot-cli` to write the CLI path. `.mcp.json` is shared with Claude Code: removing a server from either agent removes it for both. add-mcp will not create `.mcp.json` when `.github/mcp.json` already exists, because Copilot CLI would then ignore the GitHub file. Merge those servers into `.mcp.json` under `mcpServers` first. Copilot writes replace the file with strict JSON, so comments in that file are dropped (including global `~/.copilot/mcp-config.json`). Copilot CLI loads a project file only after the folder is trusted; confirm with `copilot mcp list --json`.
+GitHub Copilot CLI project installs write `.mcp.json`. If `.mcp.json` is absent, an existing `.github/mcp.json` is reused. Copilot CLI does not read `.vscode/mcp.json` (that path is the VS Code agent). Entries left in `.vscode/mcp.json` from older Copilot CLI installs stay there for VS Code; rerun with `--agent github-copilot-cli` to write the CLI path. `.mcp.json` is shared with Claude Code: removing a server from either agent removes it for both. mcps will not create `.mcp.json` when `.github/mcp.json` already exists, because Copilot CLI would then ignore the GitHub file. Merge those servers into `.mcp.json` under `mcpServers` first. Copilot writes replace the file with strict JSON, so comments in that file are dropped (including global `~/.copilot/mcp-config.json`). Copilot CLI loads a project file only after the folder is trusted; confirm with `copilot mcp list --json`.
 
 ## Installation Scope
 
@@ -119,7 +119,7 @@ The CLI automatically detects agents based on your environment:
 
 ## Commands
 
-Besides the implicit add command, `add-mcp` also supports the following commands:
+Besides the implicit add command, `mcps` also supports the following commands:
 
 | Command       | Description                                                  |
 | ------------- | ------------------------------------------------------------ |
@@ -137,59 +137,59 @@ Besides the implicit add command, `add-mcp` also supports the following commands
 
 ```bash
 # Remote MCP server (streamable HTTP)
-npx add-mcp https://mcp.example.com/mcp
+npx mcps https://mcp.example.com/mcp
 
 # Remote MCP server (SSE transport)
-npx add-mcp https://mcp.example.com/sse --transport sse
+npx mcps https://mcp.example.com/sse --transport sse
 
 # Remote MCP server with auth header
-npx add-mcp https://mcp.example.com/mcp --header "Authorization: Bearer $TOKEN"
+npx mcps https://mcp.example.com/mcp --header "Authorization: Bearer $TOKEN"
 
 # Remote server; fx reads the bearer token from this env var
-npx add-mcp https://mcp.example.com/mcp --bearer-token-env NEON_API_KEY
+npx mcps https://mcp.example.com/mcp --bearer-token-env NEON_API_KEY
 
 # Remote server with a request timeout and OAuth scopes
 # (each agent only keeps the fields it supports; others are dropped with a warning)
-npx add-mcp https://mcp.example.com/mcp --timeout 30000 --scopes "read,write"
+npx mcps https://mcp.example.com/mcp --timeout 30000 --scopes "read,write"
 
 # Auto-approve all tools for agents that support it (Codex, Claude Code)
-npx add-mcp "executor mcp" --name executor -a codex -a claude-code --auto-approve
+npx mcps "executor mcp" --name executor -a codex -a claude-code --auto-approve
 
 # Auto-approve only selected tools
-npx add-mcp "executor mcp" --name executor -a codex --auto-approve --approve-tool execute
+npx mcps "executor mcp" --name executor -a codex --auto-approve --approve-tool execute
 
 # npm package (runs via npx)
-npx add-mcp @modelcontextprotocol/server-postgres
+npx mcps @modelcontextprotocol/server-postgres
 
 # Non-interactive installation to all detected agents in the project directory
-npx add-mcp https://mcp.example.com/mcp -y
+npx mcps https://mcp.example.com/mcp -y
 
 # Non-interactive installation to the global Claude Code config
-npx add-mcp https://mcp.example.com/mcp -g -a claude-code -y
+npx mcps https://mcp.example.com/mcp -g -a claude-code -y
 
 # Full command with arguments
-npx add-mcp "npx -y @org/mcp-server --flag value"
+npx mcps "npx -y @org/mcp-server --flag value"
 
 # Node.js script
-npx add-mcp "node /path/to/server.js --port 3000"
+npx mcps "node /path/to/server.js --port 3000"
 
 # Local stdio server with environment variables (repeatable)
-npx add-mcp @modelcontextprotocol/server-filesystem --env "API_KEY=secret" --env "DATABASE_URL=postgres://localhost/app"
+npx mcps @modelcontextprotocol/server-filesystem --env "API_KEY=secret" --env "DATABASE_URL=postgres://localhost/app"
 
 # Install for Cursor and Claude Code
-npx add-mcp https://mcp.example.com/mcp -a cursor -a claude-code
+npx mcps https://mcp.example.com/mcp -a cursor -a claude-code
 
 # Install with custom server name
-npx add-mcp @modelcontextprotocol/server-postgres --name postgres
+npx mcps @modelcontextprotocol/server-postgres --name postgres
 
 # Install to all supported agents
-npx add-mcp mcp-server-github --all
+npx mcps mcp-server-github --all
 
 # Install to all agents, globally, without prompts
-npx add-mcp mcp-server-github --all -g -y
+npx mcps mcp-server-github --all -g -y
 
 # Add generated config files to .gitignore
-npx add-mcp https://mcp.example.com/mcp -a cursor -y --gitignore
+npx mcps https://mcp.example.com/mcp -a cursor -y --gitignore
 ```
 
 ### Options
@@ -215,7 +215,7 @@ npx add-mcp https://mcp.example.com/mcp -a cursor -y --gitignore
 
 #### Capability-gated fields (`--timeout`, `--scopes`, `--bearer-token-env`)
 
-Not every MCP client understands every field. `add-mcp` keeps one canonical
+Not every MCP client understands every field. `mcps` keeps one canonical
 server config and each agent declares which optional fields it supports, mapping
 them into that client's native shape:
 
@@ -226,7 +226,7 @@ them into that client's native shape:
 | Bearer token env   | `--bearer-token-env`                | fx                                                                                  | `bearer_token_env`                                                                                                  |
 | Tool auto-approval | `--auto-approve` / `--approve-tool` | Codex, Claude Code                                                                  | Codex approval modes; Claude Code permission allow rules                                                            |
 
-When you target an agent that does not support a field, `add-mcp` drops it from
+When you target an agent that does not support a field, `mcps` drops it from
 that agent's config and prints a warning (e.g. _"request timeout is not
 supported by VS Code; dropped from that config."_). Other agents still receive
 it. `--timeout`, `--scopes`, and `--bearer-token-env` apply to remote servers
@@ -257,7 +257,7 @@ tools; without it, all tools are approved.
 
 ### Transport Types
 
-`add-mcp` supports all three transport types: HTTP, SSE, and stdio. Some agents require `type` option to be set to specify the transport type. You can use the `--type` or `--transport` option to specify the transport type:
+`mcps` supports all three transport types: HTTP, SSE, and stdio. Some agents require `type` option to be set to specify the transport type. You can use the `--type` or `--transport` option to specify the transport type:
 
 | Transport | Flag               | Description                                           |
 | --------- | ------------------ | ----------------------------------------------------- |
@@ -274,22 +274,22 @@ Note that most agents like Cursor and opencode do not require the `type` informa
 
 ```bash
 # Search for servers by keyword and choose one interactively
-npx add-mcp find vercel
+npx mcps find vercel
 
 # Browse servers without a keyword
-npx add-mcp find
+npx mcps find
 
 # Use search alias (same as find)
-npx add-mcp search notion
+npx mcps search notion
 
 # Install a found server globally to a specific agent without prompts
-npx add-mcp find neon -a claude-code -g -y
+npx mcps find neon -a claude-code -g -y
 
 # Search a different registry for this command only
-npx add-mcp find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
+npx mcps find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
 
 # Install to all agents and add generated project configs to .gitignore
-npx add-mcp find github --all --gitignore
+npx mcps find github --all --gitignore
 ```
 
 ### Options
@@ -318,26 +318,26 @@ If a selected remote server defines URL variables or header inputs:
 
 ### Configuring Registries for Find / Search
 
-The first time you run `find` or `search`, the CLI automatically saves the add-mcp registry to `~/.config/add-mcp/config.json` (respects `XDG_CONFIG_HOME`) and reuses that registry on every subsequent search.
+The first time you run `find` or `search`, the CLI automatically saves the mcps registry to `~/.config/mcps/config.json` (respects `XDG_CONFIG_HOME`) and reuses that registry on every subsequent search.
 
 `--registry <url>` overrides that selection for a single command. The URL must be an `http` or `https` registry API endpoint. Saved `findRegistries` are not rewritten.
 
 ```bash
-npx add-mcp find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
+npx mcps find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
 ```
 
 ### Built-in Registries
 
 | Registry                        | Base URL                                                | Description                                                                                                                                                      |
 | ------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **add-mcp registry**            | `https://add-mcp.com/registry/api/v1/servers`           | MCP servers discovered by integrations.sh and exposed through an MCP registry-compatible API, using add-mcp's checked-in `registry.json` as the source of truth. |
+| **mcps registry**            | `https://newtondotcom.github.io/mcps/registry/api/v1/servers`           | MCP servers discovered by integrations.sh and exposed through an MCP registry-compatible API, using mcps's checked-in `registry.json` as the source of truth. |
 | **Official Anthropic registry** | `https://registry.modelcontextprotocol.io/v0.1/servers` | The community-driven MCP server registry maintained by Anthropic. Contains the broadest catalog of MCP servers.                                                  |
 
-> The add-mcp registry previously lived at `https://mcp.agent-tooling.dev/api/v1/servers`. That URL keeps working, and saved configs referencing it are migrated to the add-mcp.com address automatically on the next `find`/`search` run.
+> The mcps registry previously lived at `https://mcp.agent-tooling.dev/api/v1/servers`. That URL keeps working, and saved configs referencing it are migrated to the newtondotcom.github.io/mcps address automatically on the next `find`/`search` run.
 
 ### Missing A Server in integrations.sh?
 
-The default add-mcp registry is generated from [integrations.sh](https://integrations.sh). To be listed in add-mcp, add your MCP server to integrations.sh. Package-only servers, and remotes integrations.sh dropped that we still want in `find`, go in `registry.overlay.json`.
+The default mcps registry is generated from [integrations.sh](https://integrations.sh). To be listed in mcps, add your MCP server to integrations.sh. Package-only servers, and remotes integrations.sh dropped that we still want in `find`, go in `registry.overlay.json`.
 
 Maintainers can refresh the checked-in registry snapshot with:
 
@@ -348,17 +348,17 @@ bun run registry:verify
 
 ### Editing or Removing Registries
 
-Registry selections are stored in `~/.config/add-mcp/config.json` under the `findRegistries` key. You can edit this file directly to replace, add, remove, or reorder registries.
+Registry selections are stored in `~/.config/mcps/config.json` under the `findRegistries` key. You can edit this file directly to replace, add, remove, or reorder registries.
 
-Default add-mcp registry:
+Default mcps registry:
 
 ```json
 {
   "version": 1,
   "findRegistries": [
     {
-      "url": "https://add-mcp.com/registry/api/v1/servers",
-      "label": "add-mcp registry"
+      "url": "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+      "label": "mcps registry"
     }
   ]
 }
@@ -378,15 +378,15 @@ Replace the default with the official Anthropic registry:
 }
 ```
 
-Search both the add-mcp registry and the official Anthropic registry:
+Search both the mcps registry and the official Anthropic registry:
 
 ```json
 {
   "version": 1,
   "findRegistries": [
     {
-      "url": "https://add-mcp.com/registry/api/v1/servers",
-      "label": "add-mcp registry"
+      "url": "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+      "label": "mcps registry"
     },
     {
       "url": "https://registry.modelcontextprotocol.io/v0.1/servers",
@@ -396,7 +396,7 @@ Search both the add-mcp registry and the official Anthropic registry:
 }
 ```
 
-To reset to the default add-mcp registry, remove the `findRegistries` key or delete the config file.
+To reset to the default mcps registry, remove the `findRegistries` key or delete the config file.
 
 ### Adding a Custom Registry
 
@@ -430,7 +430,7 @@ The endpoint must return JSON in this shape:
 }
 ```
 
-To add your own registry, append an entry to `findRegistries` in `~/.config/add-mcp/config.json`:
+To add your own registry, append an entry to `findRegistries` in `~/.config/mcps/config.json`:
 
 ```json
 {
@@ -445,13 +445,13 @@ List installed MCP servers across detected agents:
 
 ```bash
 # List servers for all detected agents in the project
-npx add-mcp list
+npx mcps list
 
 # List global server configs
-npx add-mcp list -g
+npx mcps list -g
 
 # List servers for a specific agent (shown even if not detected)
-npx add-mcp list -a cursor
+npx mcps list -a cursor
 ```
 
 | Option                | Description                            |
@@ -465,16 +465,16 @@ Remove an MCP server from agent configurations by server name, URL, or package n
 
 ```bash
 # Remove by server name (interactive selection by default)
-npx add-mcp remove neon
+npx mcps remove neon
 
 # Remove all matches without prompting
-npx add-mcp remove neon -y
+npx mcps remove neon -y
 
 # Remove by URL
-npx add-mcp remove https://mcp.neon.tech/mcp -y
+npx mcps remove https://mcp.neon.tech/mcp -y
 
 # Remove from global configs for a specific agent
-npx add-mcp remove neon -g -a cursor -y
+npx mcps remove neon -g -a cursor -y
 ```
 
 | Option                | Description                          |
@@ -489,13 +489,13 @@ Synchronize server names and installations across all detected agents. Servers a
 
 ```bash
 # Sync project-level configs (interactive confirmation)
-npx add-mcp sync
+npx mcps sync
 
 # Sync without prompting
-npx add-mcp sync -y
+npx mcps sync -y
 
 # Sync global configs
-npx add-mcp sync -g -y
+npx mcps sync -g -y
 ```
 
 | Option         | Description                            |
@@ -514,7 +514,7 @@ import {
   upsertServer,
   removeServer,
   listInstalledServers,
-} from "add-mcp";
+} from "mcps";
 
 const project = detectProjectAgents("/path/to/project");
 const global = await detectGlobalAgents();

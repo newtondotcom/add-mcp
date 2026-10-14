@@ -1,2 +1,2 @@
 [install]
-registry = "https://registry.npmjs.org/"
+registry = "http://nexus.urssaf.recouv/repository/npm-group/"

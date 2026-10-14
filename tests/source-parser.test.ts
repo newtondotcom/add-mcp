@@ -126,7 +126,7 @@ test("Command - complex with args", () => {
   assert.strictEqual(result.inferredName, "github");
 });
 
-// Absolute-path command tests (regression: https://github.com/neon-solutions/add-mcp/issues/29)
+// Absolute-path command tests (regression: https://github.com/newtondotcom/mcps/issues/29)
 test("Command - absolute path without spaces", () => {
   const result = parseSource("/usr/local/bin/my-mcp-server");
   assert.strictEqual(result.type, "command");

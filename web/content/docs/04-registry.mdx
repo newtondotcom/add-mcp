@@ -1,44 +1,44 @@
 ---
 title: Registry
-description: The add-mcp registry — browse servers on the web, search from the CLI, or point add-mcp at your own registry.
+description: The mcps registry — browse servers on the web, search from the CLI, or point mcps at your own registry.
 ---
 
-The [add-mcp registry](/registry) is a searchable catalog of MCP servers, generated from [integrations.sh](https://integrations.sh) data. Browse it on the web at [add-mcp.com/registry](/registry), or search it from the terminal:
+The [mcps registry](/registry) is a searchable catalog of MCP servers, generated from [integrations.sh](https://integrations.sh) data. Browse it on the web at [newtondotcom.github.io/mcps/registry](/registry), or search it from the terminal:
 
 ```bash
-npx add-mcp find neon
+npx mcps find neon
 ```
 
 ## Built-in registries
 
 | Registry                        | Base URL                                                | Description                                                                                        |
 | ------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **add-mcp registry**            | `https://add-mcp.com/registry/api/v1/servers`           | MCP servers discovered by integrations.sh, exposed through a registry-compatible API. The default. |
+| **mcps registry**            | `https://newtondotcom.github.io/mcps/registry/api/v1/servers`           | MCP servers discovered by integrations.sh, exposed through a registry-compatible API. The default. |
 | **Official Anthropic registry** | `https://registry.modelcontextprotocol.io/v0.1/servers` | The community-driven MCP server registry maintained by Anthropic — the broadest catalog.           |
 
-The first `find`/`search` run automatically saves the default registry to `~/.config/add-mcp/config.json` (respects `XDG_CONFIG_HOME`) and reuses it on every subsequent search.
+The first `find`/`search` run automatically saves the default registry to `~/.config/mcps/config.json` (respects `XDG_CONFIG_HOME`) and reuses it on every subsequent search.
 
 To search a different registry once, pass `--registry <url>`. This does not update the saved config:
 
 ```bash
-npx add-mcp find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
+npx mcps find vercel -a claude-code --registry https://registry.modelcontextprotocol.io/v0.1/servers -g -y
 ```
 
 :::note
-The add-mcp registry previously lived at `mcp.agent-tooling.dev`. That URL keeps working — existing configs are not broken — but new installs use `add-mcp.com/registry` and the CLI migrates saved configs automatically.
+The mcps registry previously lived at `mcp.agent-tooling.dev`. That URL keeps working — existing configs are not broken — but new installs use `newtondotcom.github.io/mcps/registry` and the CLI migrates saved configs automatically.
 :::
 
 ## Editing or removing registries
 
 Registry selections are stored under the `findRegistries` key. Edit the file directly to replace, add, remove, or reorder registries:
 
-```json title="~/.config/add-mcp/config.json"
+```json title="~/.config/mcps/config.json"
 {
   "version": 1,
   "findRegistries": [
     {
-      "url": "https://add-mcp.com/registry/api/v1/servers",
-      "label": "add-mcp registry"
+      "url": "https://newtondotcom.github.io/mcps/registry/api/v1/servers",
+      "label": "mcps registry"
     },
     {
       "url": "https://registry.modelcontextprotocol.io/v0.1/servers",
@@ -52,7 +52,7 @@ To reset to the default registry, remove the `findRegistries` key or delete the 
 
 ## Missing a server?
 
-The registry is generated from [integrations.sh](https://integrations.sh). To be listed, add your MCP server there. Package-only servers, and remotes integrations.sh dropped that we still want in `find`, can be contributed to add-mcp's `registry.overlay.json` on [GitHub](https://github.com/neon-solutions/add-mcp).
+The registry is generated from [integrations.sh](https://integrations.sh). To be listed, add your MCP server there. Package-only servers, and remotes integrations.sh dropped that we still want in `find`, can be contributed to mcps's `registry.overlay.json` on [GitHub](https://github.com/newtondotcom/mcps).
 
 ## Adding a custom registry
 
@@ -87,7 +87,7 @@ The endpoint must return JSON in this shape:
 }
 ```
 
-Append an entry to `findRegistries` in `~/.config/add-mcp/config.json`:
+Append an entry to `findRegistries` in `~/.config/mcps/config.json`:
 
 ```json
 {
@@ -98,14 +98,14 @@ Append an entry to `findRegistries` in `~/.config/add-mcp/config.json`:
 
 ## Registry API
 
-The add-mcp registry itself exposes a read-only JSON API with search and cursor pagination:
+The mcps registry itself exposes a read-only JSON API with search and cursor pagination:
 
 ```bash
-curl "https://add-mcp.com/registry/api/v1/servers?search=neon&limit=10"
+curl "https://newtondotcom.github.io/mcps/registry/api/v1/servers?search=neon&limit=10"
 ```
 
 The full OpenAPI spec is served at [`/registry/api/openapi.json`](/registry/api/openapi.json). The registry server is open source and self-hostable: [agent-tooling/mcp-registry](https://github.com/agent-tooling/mcp-registry).
 
 ## Search analytics
 
-The hosted add-mcp registry records search terms from the website and registry API. The add-mcp CLI identifies its searches separately, so usage can be analyzed by website, CLI, or generic API traffic. The public all-time and weekly totals, trending terms, rankings, and per-server search counts combine every source.
+The hosted mcps registry records search terms from the website and registry API. The mcps CLI identifies its searches separately, so usage can be analyzed by website, CLI, or generic API traffic. The public all-time and weekly totals, trending terms, rankings, and per-server search counts combine every source.

@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import { dirname, join } from "path";
 import { homedir } from "os";
 
-const CONFIG_DIR = "add-mcp";
+const CONFIG_DIR = "mcps";
 const CONFIG_FILE = "config.json";
 const CURRENT_VERSION = 1;
 
@@ -16,12 +16,12 @@ export interface FindRegistryConfigEntry {
 }
 
 export const DEFAULT_FIND_REGISTRY_URL =
-  "https://add-mcp.com/registry/api/v1/servers";
-export const DEFAULT_FIND_REGISTRY_LABEL = "add-mcp registry";
+  "https://newtondotcom.github.io/mcps/registry/api/v1/servers";
+export const DEFAULT_FIND_REGISTRY_LABEL = "mcps registry";
 
 /**
  * Previous home of the default registry. The URL keeps working, but saved
- * configs are auto-migrated to the add-mcp.com address on read.
+ * configs are auto-migrated to the newtondotcom.github.io/mcps address on read.
  */
 export const LEGACY_FIND_REGISTRY_URL =
   "https://mcp.agent-tooling.dev/api/v1/servers";

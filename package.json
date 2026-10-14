@@ -1,5 +1,5 @@
 {
-  "name": "add-mcp",
+  "name": "mcps",
   "version": "2.5.0",
   "description": "Add MCP servers to your favorite coding agents with a single command.",
   "author": "Andre Landgraf <andre@neon.tech>",
@@ -15,7 +15,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "add-mcp": "dist/index.js"
+    "mcps": "dist/index.js"
   },
   "files": [
     "dist",
@@ -66,11 +66,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neon-solutions/add-mcp.git"
+    "url": "git+https://github.com/newtondotcom/mcps.git"
   },
-  "homepage": "https://github.com/neon-solutions/add-mcp#readme",
+  "homepage": "https://github.com/newtondotcom/mcps#readme",
   "bugs": {
-    "url": "https://github.com/neon-solutions/add-mcp/issues"
+    "url": "https://github.com/newtondotcom/mcps/issues"
   },
   "dependencies": {
     "@clack/prompts": "^0.9.1",

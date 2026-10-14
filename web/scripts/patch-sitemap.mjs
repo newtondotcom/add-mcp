@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const path = new URL("../dist/sitemap.xml", import.meta.url);
-const home = "https://add-mcp.com/";
+const home = "https://newtondotcom.github.io/mcps/";
 
 const xml = readFileSync(path, "utf-8");
 if (!xml.includes(`<loc>${home}</loc>`)) {
