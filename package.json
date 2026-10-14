@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "fmt": "prettier --write .",
-    "build": "tsup src/index.ts src/lib.ts --format esm --dts --clean",
+    "build": "tsdown",
     "dev": "tsx src/index.ts",
     "test": "tsx tests/source-parser.test.ts && tsx tests/agents.test.ts && tsx tests/config.test.ts && tsx tests/installer.test.ts && tsx tests/find.test.ts && tsx tests/package-arguments.test.ts && tsx tests/template.test.ts && tsx tests/reader.test.ts && tsx tests/formats-remove.test.ts && tsx tests/formats-utils.test.ts && tsx tests/opencode-config.test.ts && tsx tests/lib.test.ts && tsx tests/e2e/install.test.ts && tsx tests/e2e/cli.test.ts",
     "test:unit": "tsx tests/source-parser.test.ts && tsx tests/agents.test.ts && tsx tests/config.test.ts && tsx tests/installer.test.ts && tsx tests/find.test.ts && tsx tests/package-arguments.test.ts && tsx tests/template.test.ts && tsx tests/reader.test.ts && tsx tests/formats-remove.test.ts && tsx tests/formats-utils.test.ts && tsx tests/opencode-config.test.ts && tsx tests/lib.test.ts",
@@ -85,7 +85,7 @@
     "@types/node": "^22.10.0",
     "fallow": "^2.61.0",
     "prettier": "^3.8.1",
-    "tsup": "^8.3.5",
+    "tsdown": "^0.23.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "zod": "^4.3.6"

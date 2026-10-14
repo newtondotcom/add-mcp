@@ -180,5 +180,5 @@ If/when there is a second maintainer, this escape hatch must require their expli
 ## Out of scope (intentional)
 
 - **Dependency pinning / Dependabot / lockfile-lint.** Complementary supply-chain hardening; not in this doc.
-- **Reproducible builds.** `tsup` output is not byte-reproducible across Node versions. The provenance attestation proves "this exact tarball came from this exact commit via this exact workflow," which is the security property that matters.
+- **Reproducible builds.** `tsdown` output is not byte-reproducible across Node versions. The provenance attestation proves "this exact tarball came from this exact commit via this exact workflow," which is the security property that matters.
 - **Sigstore verification of installed dependencies (`npm audit signatures` in CI).** Worth adding as a follow-up; not required for the publish-side hardening this document covers.
